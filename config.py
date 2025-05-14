@@ -64,6 +64,16 @@ API_SETTINGS = {
         'available_models': os.getenv('ZHIPUAI_AVAILABLE_MODELS', '').split(','),
         'max_tokens': 4096,
     },
+    'bedrock': {
+        'region_name': os.getenv('BEDROCK_REGION_NAME', ''),
+        'available_models': os.getenv('BEDROCK_AVAILABLE_MODELS', '').split(','),
+        'max_tokens': 4096,
+    },
+    'ollama': {
+        'available_models': ["ollama/qwen2.5-coder:3b"],
+        'max_tokens': 4096,
+    },
+
     'local': {
         'base_url': os.getenv('LOCAL_BASE_URL', ''),
         'api_key': os.getenv('LOCAL_API_KEY', ''),

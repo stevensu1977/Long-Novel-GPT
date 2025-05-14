@@ -9,6 +9,7 @@ import numpy as np
 def parser(response_msgs, plot_chunks, text_chunks):
     from prompts.prompt_utils import match_first_json_block
     content = response_msgs[-1]['content']
+    print(content)
     content = match_first_json_block(content)
     plot2text = json.loads(content)
 

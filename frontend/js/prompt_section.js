@@ -1,5 +1,7 @@
 import { createNewChunk, updateChunksContent, showToast, toggleLeftPanel, getStorageKey, saveDataToStorage, getDataFromStorage } from './utils.js';
-import jsyaml from 'https://cdn.skypack.dev/js-yaml';
+// import jsyaml from 'https://cdn.skypack.dev/js-yaml';
+import jsyaml from './js-yaml.js';
+
 import { showNovelSelect } from './novel_select.js';
 import { showSettings, loadModelConfigs } from './settings.js';
 

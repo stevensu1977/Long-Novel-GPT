@@ -1,5 +1,6 @@
 import json
 import time
+import traceback
 
 from flask import Flask, request, Response, jsonify
 from flask_cors import CORS
@@ -240,6 +241,8 @@ def write():
     # Update settings if provided
     if 'settings' in data:
         max_thread_num = data['settings']['MAX_THREAD_NUM']
+    else:
+        max_thread_num =1
 
     # Generate unique stream ID
     stream_id = str(time.time())
@@ -258,6 +261,8 @@ def write():
                     
                 yield f"data: {json.dumps(result)}\n\n"
         except Exception as e:
+            print(f"创作出错{main_model}：\n{str(e)}")
+            traceback.print_exc()
             error_msg = f"创作出错：\n{str(e)}"
             error_chunk_list = [[*e[:2], error_msg] for e in chunk_list[chunk_span[0]:chunk_span[1]]]
             
@@ -318,6 +323,8 @@ def process_novel_text():
             error_data = {
                 "progress_msg": f"处理出错：{str(e)}",
             }
+            print(f"处理出错：{str(e)}")
+            traceback.print_exc()
             yield f"data: {json.dumps(error_data)}\n\n"
         finally:
             # Clean up stream tracking
@@ -338,4 +345,5 @@ def stop_stream():
     return jsonify({'success': True})
 
 if __name__ == '__main__':
-    app.run(host=BACKEND_HOST, port=BACKEND_PORT, debug=False) 
+    debug = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] == 'debug' else False
+    app.run(host=BACKEND_HOST, port=BACKEND_PORT, debug=debug) 

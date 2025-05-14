@@ -1,6 +1,6 @@
 // Create and append the popup HTML to the document
 import { saveDataToStorage, showToast, stopStream } from './utils.js';
-import jsyaml from 'https://cdn.skypack.dev/js-yaml';
+import jsyaml from './js-yaml.js';
 
 // Add AbortController for fetch requests
 let currentFetchController = null;
@@ -191,7 +191,7 @@ async function handleFileSelect(event) {
                 // If garbled, try reading again with GBK encoding
                 const response = await fetch(URL.createObjectURL(file));
                 const buffer = await response.arrayBuffer();
-                const decoder = new TextDecoder('gbk');
+                const decoder = new TextDecoder('utf-8');
                 content = decoder.decode(buffer);
             }
         } catch (error) {

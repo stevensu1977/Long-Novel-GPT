@@ -6,6 +6,8 @@ from .doubao_api import stream_chat_with_doubao, doubao_model_config
 from .chat_messages import ChatMessages
 from .openai_api import stream_chat_with_gpt, gpt_model_config
 from .zhipuai_api import stream_chat_with_zhipuai, zhipuai_model_config
+from .bedrock_api import stream_chat_with_bedrock, bedrock_model_config
+from .ollama_api import stream_chat_with_ollama,ollama_model_config
 
 class ModelConfig(dict):
     def __init__(self, model: str, **options):
@@ -27,6 +29,11 @@ class ModelConfig(dict):
             check_key('豆包', ['api_key', 'endpoint_id'])
         elif self['model'] in zhipuai_model_config:
             check_key('智谱AI', ['api_key'])
+        elif self['model'] in bedrock_model_config:
+            pass
+        elif self['model'] in ollama_model_config:
+            pass
+
         elif self['model'] in gpt_model_config or True:
             # 其他模型名默认采用openai接口调用
             check_key('OpenAI', ['api_key'])
@@ -80,6 +87,18 @@ def stream_chat(model_config: ModelConfig, messages: list, response_json=False) 
             model=model_config['model'],
             api_key=model_config['api_key'],
             max_tokens=model_config['max_tokens'],
+            response_json=response_json
+        )
+    elif model_config['model'] in bedrock_model_config:
+        result = yield from stream_chat_with_bedrock(
+            messages,
+            model=model_config['model'],
+            response_json=response_json
+        )
+    elif model_config['model'] in ollama_model_config:
+        result = yield from stream_chat_with_ollama(
+            messages,
+            model=model_config['model'],
             response_json=response_json
         )
     elif model_config['model'] in gpt_model_config or True:  # openai models或其他兼容openai接口的模型

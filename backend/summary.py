@@ -47,16 +47,18 @@ def process_novel(content, novel_name, model, sub_model, max_novel_summary_lengt
         time.sleep(1)
 
     # Parse chapters
+    print("正在解析章节...")
     yield {"progress_msg": "正在解析章节..."}
 
     chapter_titles, chapter_contents = parse_chapters(content)
-
+    print("解析出章节数：" + str(len(chapter_titles)))
     yield {"progress_msg": "解析出章节数：" + str(len(chapter_titles))}
 
     if len(chapter_titles) == 0:
         raise Exception("解析出章节数为0！！！")
 
     # Process draft summaries
+    print("正在生成剧情摘要...")
     yield {"progress_msg": "正在生成剧情摘要..."}
     dw_list = []
     gens = [summary_draft(model, sub_model, ' '.join(title), content) for title, content in zip(chapter_titles, chapter_contents)]

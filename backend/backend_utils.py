@@ -4,6 +4,8 @@ def get_model_config_from_provider_model(provider_model):
     from config import API_SETTINGS
     provider, model = provider_model.split('/', 1)
     provider_config = API_SETTINGS[provider]
+
+    print("provider infomration", provider,model, provider_config)
     
     if provider == 'doubao':
         # Get the index of the model in available_models to find corresponding endpoint_id
